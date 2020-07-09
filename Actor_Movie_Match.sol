@@ -1,7 +1,7 @@
 pragma solidity ^0.5.0;
-pragma experimental ABIEncoderV2;
+pragma experimental ABIEncoderV2;   // To allow returning of string arrays for functions
 
-contract actorsandMovies{
+contract ActorMovieMatch{
     struct actor{
         uint256 actor_id;
         string actor_name;
@@ -19,34 +19,34 @@ contract actorsandMovies{
     uint256 mov_id = 1;
     string[] names;
     
-    mapping (uint256 => actor[]) movieToactors;
-    mapping (uint256 => movie[]) actorTomovies;
+    mapping (uint256 => actor[]) movieToactors;   // Mapping Actors to Movies
+    mapping (uint256 => movie[]) actorTomovies;   // Mapping Movies to Actors
     
-    function add_actor(string memory _name) public {
+    function add_actor(string memory _name) public {  // Add actors
         actors.push(actor(act_id,_name));
         act_id++;
     }
     
-    function add_movie(string memory _name) public {
+    function add_movie(string memory _name) public {  // Add movies
         movies.push(movie(mov_id,_name));
         mov_id++;
     }
     
-    function actor_moviesList(uint256 _actorId, uint256[] memory  _moviesList) public {
+    function actor_moviesList(uint256 _actorId, uint256[] memory  _moviesList) public {  // Association of one actor to multiple movies
         uint256[] memory list = _moviesList;
         for(uint i = 0; i<list.length;i++){
             actorTomovies[_actorId].push(movie(list[i],movies[i].movie_name));
         }
     }
     
-    function movie_actorList(uint256 _movieId, uint256[] memory  _actorsList) public {
+    function movie_actorList(uint256 _movieId, uint256[] memory  _actorsList) public {  // Association of one movie to multiple actors
         uint256[] memory list = _actorsList;
         for(uint i = 0; i<list.length;i++){
             movieToactors[_movieId].push(actor(list[i],actors[i].actor_name));
         }
     }
     
-    function getMovies(uint256 _actorID) public returns(string[] memory) {
+    function getMovies(uint256 _actorID) public returns(string[] memory) {   // Getting the list of movies for one actor
         delete names;
         for(uint i=0;i<actorTomovies[_actorID].length;i++){
             names.push(actorTomovies[_actorID][i].movie_name);
@@ -54,12 +54,11 @@ contract actorsandMovies{
         return names;
     }
     
-    function getActors(uint256 _movieID) public returns(string[] memory) {
+    function getActors(uint256 _movieID) public returns(string[] memory) {   //Getting the list of actors for one movie
         delete names;
         for(uint i=0;i<movieToactors[_movieID].length;i++){
             names.push(movieToactors[_movieID][i].actor_name);
         }
         return names;
-    }
-    
-} 
+    }   
+}
