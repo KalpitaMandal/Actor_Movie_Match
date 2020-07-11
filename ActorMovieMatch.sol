@@ -32,17 +32,14 @@ contract ActorMovieMatch{
         mov_id++;
     }
     
-    function actor_moviesList(uint256 _actorId, uint256[] memory  _moviesList) public {  // Association of one actor to multiple movies
+    function actor_moviesList(uint256 _actorId, uint256[] memory  _moviesList) public {  // Association of one actor to multiple movies and vice versa
         uint256[] memory list = _moviesList;
         for(uint i = 0; i<list.length;i++){
             actorTomovies[_actorId].push(movie(list[i],movies[i].movie_name));
         }
-    }
-    
-    function movie_actorList(uint256 _movieId, uint256[] memory  _actorsList) public {  // Association of one movie to multiple actors
-        uint256[] memory list = _actorsList;
+        
         for(uint i = 0; i<list.length;i++){
-            movieToactors[_movieId].push(actor(list[i],actors[i].actor_name));
+            movieToactors[list[i]].push(actor(list[i],actors[i].actor_name));
         }
     }
     
